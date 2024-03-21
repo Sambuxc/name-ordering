@@ -1,27 +1,27 @@
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld msg="Name Ordering Has Never Been Cooler"/>
     </div>
   </header>
 
   <main>
     <div class="input-wrapper">
+      <div>
+        <input type="button" value="Clear All" @click="clearList">
+        <input type="button" value="Sort" @click="sortList('alpha')">
+      </div>
       <input
-        type="text"
-        name="input-name"
-        @keydown="inputChange($event)"
-        v-model:="nameVal"
+          type="text"
+          name="input-name"
+          @keydown="inputChange($event)"
+          v-model:="nameVal"
       />
-      <input type="button" value="Clear All" @click="clearList">
-      <input type="button" value="Sort" @click="sortList('alpha')">
     </div>
 
     <NameList
-      v-if="nameArr.length > 0"
-      :list="nameArr"
+        v-if="nameArr.length > 0"
+        :list="nameArr"
     />
   </main>
 </template>
@@ -65,21 +65,11 @@ header {
   line-height: 1.5;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
 @media (min-width: 1024px) {
   header {
     display: flex;
     flex-direction: column;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
   }
 
   header .wrapper {
@@ -94,9 +84,44 @@ main {
   flex-direction: column;
   justify-content: center;
   place-content: center;
+  width: 100%;
 }
 
 .input-wrapper {
   margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 5px;
+
+  input {
+    border-radius: 5px;
+  }
+
+  input[type=button] {
+    padding: .5rem;
+    width: fit-content;
+    background: rgba(255, 255, 255, 0.7);
+    font-family: monospace;
+    font-size: .7rem;
+
+    &:active {
+      background: rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  input[type=text] {
+    padding: 8px;
+    width: 60%;
+    background: rgba(255, 255, 255, 0.6);
+    font-family: monospace;
+
+    &:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.7);
+    }
+  }
 }
+
 </style>

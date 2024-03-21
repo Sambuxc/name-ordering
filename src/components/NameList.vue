@@ -14,13 +14,15 @@ const props = defineProps({
   list: { type: Array }
 })
 // TODO: read up transition-group -> https://vuejs.org/guide/built-ins/transition-group.html#transitiongroup
+// TODO: on hover li, truncate text and animate X button to remove it
 </script>
 
 <style scoped>
 ul {
+  margin-top: 1rem;
   list-style: none;
   padding-left: 0;
-  width: 789px;
+  max-width: 789px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -29,11 +31,12 @@ li {
   padding: 8px;
   width: fit-content;
   border-radius: 13px;
-  outline: 1px solid lightblue;
+  outline: 1px solid var(--vt-c-white-soft);
   background: hsla(160, 100%, 37%, 1);
-  color: whitesmoke;
+  color: var(--vt-c-black);
   pointer-events: none;
   text-transform: capitalize;
+  font-family: monospace;
   transition: 1s all ease-in-out;
 }
 </style>
