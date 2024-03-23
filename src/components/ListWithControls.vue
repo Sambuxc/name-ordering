@@ -18,6 +18,7 @@
   <ListItems
       v-if="items.length > 0"
       :items="items"
+      @remove="remove"
   />
 </template>
 
@@ -61,8 +62,8 @@ function sortList(type) {
   }
 }
 
-function remove() {
-  console.log('remove clicked')
+function remove(index) {
+  items.value.splice(index, 1)
 }
 </script>
 

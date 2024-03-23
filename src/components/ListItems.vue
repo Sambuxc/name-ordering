@@ -6,7 +6,7 @@
         class="item"
     >
       {{ item }}
-<!--      <button @click="$emit('remove')">x</button>-->
+      <button class="remove" @click="$emit('remove', index)">x</button>
     </li>
   </TransitionGroup>
 </template>
@@ -17,8 +17,6 @@ const props = defineProps({
     type: Array
   }
 })
-// TODO: on hover li, truncate text and animate X button to remove it
-
 </script>
 
 <style scoped>
@@ -33,7 +31,7 @@ const props = defineProps({
 }
 
 li {
-  position: relative;
+  overflow: hidden;
   margin: 8px 8px 0 0;
   padding: 8px;
   width: fit-content;
@@ -44,6 +42,12 @@ li {
   text-transform: capitalize;
   font-family: monospace;
   transition: 1s all ease-in-out;
+  cursor: default;
+
+  &:hover button.remove {
+    left: 0;
+    opacity: 1;
+  }
 }
 
 
@@ -65,5 +69,21 @@ li {
       animations can be calculated correctly. */
 .fade-leave-active {
   position: absolute;
+}
+
+button.remove {
+  position: absolute;
+  appearance: none;
+  background: none;
+  border-width: 1px;
+  position: relative;
+  left: 40px;
+  opacity: 0;
+  transition: .3s all ease;
+
+  &:hover {
+    border: 1px solid red;
+    cursor: pointer;
+  }
 }
 </style>
