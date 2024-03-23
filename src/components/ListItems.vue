@@ -1,8 +1,8 @@
 <template>
   <TransitionGroup tag="ul" name="fade" class="container">
     <li
-        v-for="(item, index) in props.list"
-        :key="index"
+        v-for="(item, index) in props.items"
+        :key="item"
         class="item"
     >
       {{ item }}
@@ -13,21 +13,23 @@
 
 <script setup>
 const props = defineProps({
-  list: {type: Array},
+  items: {
+    type: Array
+  }
 })
-// TODO: read up transition-group -> https://vuejs.org/guide/built-ins/transition-group.html#transitiongroup
 // TODO: on hover li, truncate text and animate X button to remove it
 
 </script>
 
 <style scoped>
-ul.container {
+.container {
+  position: relative;
   margin-top: 1rem;
   margin-left: auto;
   margin-right: auto;
-  list-style: none;
-  position: relative;
   padding: 0;
+  list-style: none;
+  width: 60%;
 }
 
 li {
@@ -44,19 +46,6 @@ li {
   transition: 1s all ease-in-out;
 }
 
-/*
-* Transitions
-*/
-
-.list-enter-active,
-.list-leave-active {
-  //transition: all 1s ease;
-}
-.list-enter-from,
-.list-leave-to {
-  //opacity: 0;
-  //transform: translateX(30px);
-}
 
 /* 1. declare transition */
 .fade-move,

@@ -17,11 +17,12 @@
 
   <ListItems
       v-if="items.length > 0"
-      :list="items"
+      :items="items"
   />
 </template>
 
 <script setup>
+// TODO: Change sort button to select dropdown with 2 options; Alphabetical, Alphabet Reversed
 import ListItems from "@/components/ListItems.vue"
 import {shuffle as _shuffle} from 'lodash-es'
 import {ref} from "vue"
