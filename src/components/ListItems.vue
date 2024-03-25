@@ -5,8 +5,11 @@
         :key="item"
         class="item"
     >
-      {{ item }}
-      <button class="remove" @click="$emit('remove', index)">x</button>
+      <div class="fancy-border"></div>
+      <div class="content-wrapper">
+        {{ item }}
+        <button class="remove" @click="$emit('remove', index)">x</button>
+      </div>
     </li>
   </TransitionGroup>
 </template>
@@ -31,12 +34,12 @@ const props = defineProps({
 }
 
 li {
-  overflow: hidden;
+  position: relative;
   margin: 8px 8px 0 0;
   padding: 8px;
   width: fit-content;
   border-radius: 13px;
-  outline: 1px solid var(--vt-c-white-soft);
+  //outline: 1px solid var(--vt-c-white-soft);
   background: hsla(160, 100%, 37%, 1);
   color: var(--vt-c-black);
   text-transform: capitalize;
@@ -44,10 +47,44 @@ li {
   transition: 1s all ease-in-out;
   cursor: default;
 
+  .content-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
   &:hover button.remove {
     left: 0;
     opacity: 1;
   }
+
+  &:hover .fancy-border {
+    opacity: 1;
+  }
+  .fancy-border {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    border: 2px solid greenyellow;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    border-radius: inherit;
+    animation: animate 2s linear infinite;
+    transition: .5s opacity ease;
+  }
+
+  @keyframes animate {
+    50% {
+      filter: hue-rotate(350deg);
+    }
+
+  }
+}
+
+ul:has(li:hover) li:not(:hover) {
+  opacity: 0.2;
 }
 
 
@@ -75,15 +112,14 @@ button.remove {
   position: absolute;
   appearance: none;
   background: none;
-  border-width: 1px;
+  border: 0;
   position: relative;
   left: 40px;
+  background: teal;
+  color: var(--color-text);
   opacity: 0;
   transition: .3s all ease;
-
-  &:hover {
-    border: 1px solid red;
-    cursor: pointer;
-  }
+  cursor: pointer;
 }
+
 </style>
