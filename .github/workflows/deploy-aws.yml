@@ -20,10 +20,10 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.9.1
 
-      - name: npm install & build
+      - name: yarn install & build
         run: |
-          npm install
-          npm run build
+          yarn install
+          yarn build
 
       - name: S3 sync
         uses: jakejarvis/s3-sync-action@master
