@@ -112,7 +112,6 @@
   }
 
   button.remove {
-    position: absolute;
     appearance: none;
     background: none;
     border: 0;
