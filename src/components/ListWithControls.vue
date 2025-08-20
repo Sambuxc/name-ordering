@@ -1,17 +1,55 @@
 <template>
+  <div
+      v-if="savedLists.length > 0"
+      class="saved-lists"
+  >
+    <h2>Saved Lists</h2>
+    <template
+        v-for="list in savedLists"
+        :key="list.name"
+    >
+      <button
+          @click="restoreList(list)"
+      >
+        {{ list.name }}
+      </button>
+    </template>
+  </div>
   <div class="controls-wrapper">
-    <div class="">
-      <button @click="clearList">Clear All</button>
-      <button @click="sortList('alpha')">Sort</button>
-      <button @click="sortList('shuffle')" aria-label="Shuffle the deck!"
-              title="Shuffle the deck!">Shuffle
+    <div class="controls">
+      <button
+          :disabled="!isListLoaded"
+          @click="clearList"
+      >
+        Clear All
+      </button>
+      <button
+          :disabled="!isListLoaded"
+          @click="saveList"
+      >
+        Save list
+      </button>
+      <button
+          :disabled="!isListLoaded"
+          @click="sortList('alpha')"
+      >
+        Sort
+      </button>
+      <button
+          :disabled="!isListLoaded"
+          @click="sortList('shuffle')"
+          aria-label="Shuffle the deck!"
+          title="Shuffle the deck!"
+      >
+        Shuffle
       </button>
     </div>
     <input
         type="text"
         name="input-name"
         @keydown="inputChange($event)"
-        v-model:="inputVal"
+        v-model="inputVal"
+        placeholder="Enter a name"
     />
   </div>
 
@@ -25,13 +63,32 @@
 <script setup>
 // TODO: Change sort button to select dropdown with 2 options; Alphabetical, Alphabet Reversed
 import ListItems from "@/components/ListItems.vue"
-import {shuffle as _shuffle} from 'lodash-es'
-import {ref} from "vue"
+import { shuffle as _shuffle } from 'lodash-es'
+import { computed, ref } from "vue"
 
 const inputVal = ref('')
 
 const items = ref([])
+const savedLists = ref({});
+retrieveLocalStorageLists();
 
+/**
+ * Get all the saved lists from local storage and return them as an array of objects
+ * @returns {Array} - Array of objects with the list name and the list
+ */
+function retrieveLocalStorageLists() {
+  // filter out of local storage all items that start with `list-` and have a length greater than 2 to avoid empty lists
+  // such as, `[]`.
+  const listNames = Object.keys(localStorage).filter(key => key.startsWith('list-') && localStorage.getItem(key).length > 2)
+
+  savedLists.value = listNames.map(name => {
+    const list = localStorage.getItem(name)
+    return {
+      name: name.replace('list-', ''),
+      data: JSON.parse(list)
+    }
+  })
+}
 
 function inputChange(e) {
   const keyCode = e.code
@@ -50,6 +107,18 @@ function clearList() {
   items.value = []
 }
 
+/**
+ * Save the list items to local storage, prompting the user to give the list a name
+ * @returns {void}
+ */
+function saveList() {
+  const list = JSON.stringify(items.value)
+  // prompt user with alert to give the list a name
+  const listName = prompt('Please enter a name for the list', 'Team Red')
+  localStorage.setItem(`list-${listName}`, list)
+  retrieveLocalStorageLists();
+}
+
 function sortList(type) {
   switch (type) {
     case 'alpha':
@@ -65,9 +134,39 @@ function sortList(type) {
 function remove(index) {
   items.value.splice(index, 1)
 }
+
+/**
+ * Loads list data by setting the items to the list items.
+ * If the list is empty, it will set the items to the list data.
+ * @param list
+ * @returns {void}
+ */
+function restoreList(list) {
+  if (!!list) {
+    items.value = list.data
+  }
+}
+
+const isListLoaded = computed(() => {
+  return items.value.length > 0
+})
 </script>
 
 <style scoped>
+.saved-lists {
+  margin-left: 5px;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  gap: 5px;
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  button {
+    margin-left: 10px;
+  }
+}
 
 .controls-wrapper {
   margin: 0 auto;
@@ -76,6 +175,11 @@ function remove(index) {
   flex-flow: column;
   align-items: center;
   gap: 5px;
+
+  .controls {
+    display: flex;
+    gap: 5px;
+  }
 
   input {
     border-radius: 5px;
